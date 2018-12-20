@@ -4,6 +4,7 @@ class Exam {
         this.result = result;
         this.year = year;
     }
+
 }
 const numbers = [];
 class UI {
@@ -14,7 +15,7 @@ class UI {
         <td>${exam.name}</td>
         <td id="result">${exam.result}</td>
         <td>${exam.year}</td>
-        <td><a href="#" class="delete">&#10006</a></td>
+        <td><a id="result" href="#" class="delete">&#10006</a></td>
         `
         list.appendChild(row);
 
@@ -24,7 +25,7 @@ class UI {
         document.getElementById('exam-result').value = '';
         document.getElementById('exam-year').value = '';
     }
-    alertShow(message,className){
+    alertShow(message,className) {
         const div = document.createElement('div');
         div.className = `alert ${className}`;
         div.appendChild(document.createTextNode(message));
@@ -35,32 +36,20 @@ class UI {
             document.querySelector('.alert').remove()
         }, 2000);
     }
-    addToArray() {
-        const result = document.getElementById('exam-result').value;
+    addToArray(result) {
         numbers.push(Number(result));
-        let sum = 0;
-        for (let i = 0; i < numbers.length; i++) {
-            sum += numbers[i];
-        }
-        let total = sum / numbers.length;
-        // console.log(total);
+        let total = numbers.reduce((a,b) => a+b, 0) / numbers.length;
         console.log(numbers);
         const arithmetic = document.getElementById('arithmetic');
         arithmetic.innerHTML = `Prosečna ocena je ${total}`;
     }
-    deleteExam(target){
-        if(target.classList.contains('delete')){
+    deleteExam(target) {
+        if(target.classList.contains('delete')) {
             target.parentElement.parentElement.remove();
+            numbers.splice(-1, 1);
             return true;
         }
     }
-    // remove(number){
-    //     for( var i = 0; i < numbers.length; i++){ 
-    //         if ( numbers[i] === number) {
-    //         numbers.splice(i, 1); 
-    //         }
-    //     }
-    // }
 }
 
 document.getElementById('exam-form').addEventListener('submit',
@@ -70,9 +59,6 @@ function(e){
     const year = document.getElementById('exam-year').value;
     
     const exam = new Exam(name,result,year);
-
-    console.log(exam);
-
     const ui = new UI();
 
     if(name === '' || result === '' || year === ''){
@@ -80,19 +66,17 @@ function(e){
     } else {
         ui.addExam(exam);
         ui.alertShow('Exam added', 'success');
-        ui.addToArray();
+        ui.addToArray(result);
     }
     ui.clearFields();
     e.preventDefault();
 });
 
 document.getElementById('exam-list').addEventListener('click', 
-function(e){
+function(e) {
     const ui = new UI();
-    if((ui.deleteExam(e.target)) === true) {
-        ui.deleteExam(e.target);
-        ui.alertShow('Deleted exam', 'success');
-    }
+    ui.deleteExam(e.target);
+    ui.alertShow('Deleted exam', 'success');
     console.log(numbers);
     e.preventDefault();
 });
