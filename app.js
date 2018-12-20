@@ -5,7 +5,7 @@ class Exam {
         this.year = year;
     }
 }
-const object = [];
+const numbers = [];
 class UI {
     addExam(exam){
         const list = document.getElementById('exam-list');
@@ -70,6 +70,8 @@ function(e){
     const year = document.getElementById('exam-year').value;
     
     const exam = new Exam(name,result,year);
+
+    console.log(exam);
 
     const ui = new UI();
 
