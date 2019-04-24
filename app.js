@@ -66,7 +66,7 @@ document.getElementById('exam-form').addEventListener('submit',
         const ui = new UI();
 
 
-        if (name === '' || result === '' || year === '') {
+        if (name === '' || result === '') {
             ui.alertShow('You need to fill all field', 'error');
         } else {
             ui.addExam(exam);
